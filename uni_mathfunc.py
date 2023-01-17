@@ -108,24 +108,32 @@ def price_on_contract(p: float) -> int:
 
 
 def calc_liq_x(deposit_x_amount: int, p_x: int, p_y: int) -> int:
+    """given the current price and token X's max price on curve, 
+    calculate the result liquidity if deposit an amount """
     b = max(p_x, p_y)
     c = min(p_x, p_y)
     return int(deposit_x_amount * b * c / (b - c))
 
 
 def calc_liq_y(deposit_y_amount:  int, p_x: int, p_y: int) -> int:
+    """given the current price and token Y's max price on curve, 
+    calculate the result liquidity if deposit an amount """
     c = max(p_x, p_y)
     a = min(p_x, p_y)
     return int(deposit_y_amount / (c - a))
 
 
-def contract_recalc_deposit_amount_x(target_liq: int, p_x: int, p_y: int) -> int:
+def calc_deposit_token_x(liquidity: int, p_x: float, p_y: float) -> int:
+    """Given the added liquidiy, current price, target price we want to lead, 
+    calacuate the amount of X tokens we need to deposit"""
     b = max(p_x, p_y)
     c = min(p_x, p_y)
-    return int(target_liq * (b-c) / (b*c))
+    return int(liquidity * (b-c) / (b*c))
 
 
-def contract_recalc_deposit_amount_y(target_liq: int, p_x: int, p_y: int) -> int:
+def calc_deposit_token_y(liquidity: int, p_x: float, p_y: float) -> int:
+    """Given the added liquidiy, current price, target price we want to lead, 
+    calacuate the amount of Y tokens we need to deposit"""
     c = max(p_x, p_y)
     a = min(p_x, p_y)
-    return int(target_liq * (c - a))
+    return int(liquidity * (c - a))
